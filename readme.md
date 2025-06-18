@@ -1,3 +1,108 @@
+[Version français de la documentation](#FR)
+
+# Installation documentation for `lh-runmultiurls.sh` and `lh-createcsv.py` scripts
+
+## Prerequisites
+- Operating system: **MacOS**, **Linux** or **Windows with WSL**
+- Required tools: **Node.js** (for Lighthouse), **Conda** (for Python), and a terminal
+
+## Installation steps
+
+### 1. Installing Node.js and Lighthouse
+- Check if Node.js is installed:
+  ```bash
+  node -v
+  ```
+- If Node.js is not installed, download and install it from [nodejs.org](https://nodejs.org).
+- Install Lighthouse globally:
+  ```bash
+  npm install -g lighthouse
+  ```
+
+### 2. Setting up the Conda environment
+- Download and install **Miniconda** or **Anaconda** from [conda.io](https://conda.io).
+- Create a new Conda environment for the project:
+  ```bash
+  conda create -n lighthouse python=3.9
+  ```
+- Activate the environment:
+  ```bash
+  conda activate lighthouse
+  ```
+
+### 3. Installing Python modules
+- The modules used in `lh-createcsv.py` are **standard** Python modules (`json`, `os`, `glob`, `csv`, `datetime`).
+- No additional Python module installation is required.
+
+### 4. Configuring the shell script (`lh-runmultiurls.sh`)
+- Make the script executable:
+  ```bash
+  chmod +x lh-runmultiurls.sh
+  ```
+- Ensure that the `urls.txt` file exists in the same directory as `lh-runmultiurls.sh`. This file must contain the list of URLs to test, one URL per line.
+
+## Format of the urls.txt file and advanced options
+
+The `urls.txt` file and the `lh-runmultiurls.sh` script support the following features:
+
+**Comments in urls.txt**: You can add comments to your `urls.txt` file by prefixing the line with the `#` character. These lines will be ignored by the script. Example (urls.txt):
+
+```
+# Main sites section
+https://www.example.com
+# Blog section (to test later)
+# https://www.example.com/blog
+https://www.another-example.com
+```
+
+**Basic Authentication Support**: For sites protected by basic authentication, you can provide credentials to the script via command line options:
+
+```
+-u <username> or --username <username>: To specify the username.
+-p <password> or --password <password>: To specify the password.
+-h or --help: To display the help message.
+```
+
+The `urls.txt` file can contain a mix of URLs requiring authentication and public URLs. Important: All URLs protected by basic authentication during the same script execution must use the same credentials. The script only supports one set of credentials per call.
+
+Example script call with authentication:
+
+```./lh-runmultiurls.sh -u myusername -p mypassword```
+
+### 5. Running the scripts
+- Run the shell script to generate Lighthouse reports:
+  ```bash
+  ./lh-runmultiurls.sh
+  ```
+- JSON reports will be generated in the `results` folder.
+- Run the Python script to transform JSON reports into CSV:
+  ```bash
+  python lh-createcsv.py
+  ```
+
+### 6. Using the CSV report
+- **File location**: The CSV file is generated in the `results` folder with a name like `lh-results-YYYY-MM-DD_HH-MM-SS.csv`.
+- **Opening the file**:
+  - Use a spreadsheet application like **Microsoft Excel**, **Google Sheets**, or **LibreOffice Calc** to open the CSV file.
+  - Import the file into Google Sheets via "File > Import" or open it directly in Excel/Calc.
+- **Data analysis**:
+  - The CSV contains the columns: `date`, `url`, `source_file`, `performance_percent`, `fcp`, `lcp`, `total_byte_weight`.
+  - **performance_percent**: Performance score (0-100). A score > 90 is excellent.
+  - **fcp** (First Contentful Paint): Time (in ms) for the first content display. Aim for < 1800 ms.
+  - **lcp** (Largest Contentful Paint): Time (in ms) for rendering the largest element. Aim for < 2500 ms.
+  - **total_byte_weight**: Total weight of resources (in bytes). Reduce to improve speed.
+- **Usage**:
+  - Sort URLs by `performance_percent` to identify pages to optimize.
+  - Compare `fcp` and `lcp` to detect loading issues.
+  - Export data to charts (via Excel/Sheets) to visualize performance.
+  - Archive CSVs to track performance evolution over time.
+
+## Notes
+- Ensure that the `results` folder exists or will be created automatically by `lh-runmultiurls.sh`.
+- The scripts must be run in a terminal under **MacOS** or **Linux**.
+- If you encounter errors, verify that Node.js, Lighthouse, and Conda are properly installed.
+
+<a id="FR"></a>
 # Documentation d'installation des scripts `lh-runmultiurls.sh` et `lh-createcsv.py`
 
 ## Prérequis
