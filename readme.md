@@ -1,7 +1,7 @@
 # Documentation d'installation des scripts `lh-runmultiurls.sh` et `lh-createcsv.py`
 
 ## Prérequis
-- Système d'exploitation : **MacOS** ou **Linux**
+- Système d'exploitation : **MacOS** , **Linux** ou **Windows avec WSL**
 - Outils nécessaires : **Node.js** (pour Lighthouse), **Conda** (pour Python), et un terminal
 
 ## Étapes d'installation
@@ -36,8 +36,34 @@
 - Rendez le script exécutable :
   ```bash
   chmod +x lh-runmultiurls.sh
-  ```
-- Assurez-vous que le fichier `urls.txt` existe dans le même répertoire que `lh-runmultiurls.sh` avec la liste des URLs à tester.
+Assurez-vous que le fichier urls.txt existe dans le même répertoire que lh-runmultiurls.sh. Ce fichier doit contenir la liste des URLs à tester, une URL par ligne.
+Format du fichier urls.txt et options avancées
+
+Le fichier urls.txt et le script lh-runmultiurls.sh supportent les fonctionnalités suivantes :
+
+Commentaires dans urls.txt : Vous pouvez ajouter des commentaires dans votre fichier urls.txt en faisant précéder la ligne du caractère #. Ces lignes seront ignorées par le script. Exemple (urls.txt) :
+
+```
+# Section des sites principaux
+https://www.example.com
+# Section des blogs (à tester plus tard)
+# https://www.example.com/blog
+https://www.another-example.com
+```
+
+**Support de l'Authentification de Base** (Basic Authentication) : Pour les sites protégés par une authentification de base, vous pouvez fournir les identifiants au script via les options en ligne de commande :
+
+```
+-u <nom_utilisateur> ou --username <nom_utilisateur> : Pour spécifier le nom d'utilisateur.
+-p <mot_de_passe> ou --password <mot_de_passe> : Pour spécifier le mot de passe.
+-h ou --help : Pour afficher le message d'aide.
+```
+
+Le fichier urls.txt peut contenir un mélange d'URLs nécessitant une authentification et d'URLs publiques. Important : Toutes les URLs protégées par authentification de base lors d'une même exécution du script doivent utiliser les mêmes identifiants. Le script ne prend en charge qu'un seul jeu d'identifiants par appel.
+
+Exemple d'appel du script avec authentification :
+
+```./lh-runmultiurls.sh -u monutilisateur -p monmotdepasse```
 
 ### 5. Exécution des scripts
 - Exécutez le script shell pour générer les rapports Lighthouse :
